@@ -30,5 +30,5 @@ void match(int);
 void printStatmt();
 void parse();
 void printError(char);
-
+char* setOperator(int);
 #endif

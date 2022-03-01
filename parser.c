@@ -48,6 +48,8 @@ void match(int t) {
   }
 }
 
+//This function runs first the var declaration
+// and the assigments operations
 void process() {
   while (lookahead == INT) {
     declaration();
@@ -122,15 +124,27 @@ void term() {
   factor();
   while (lookahead == '+' || lookahead == '-' || lookahead == '*' ||
          lookahead == '/') {
-    char looker = lookahead + 0;
+    char* looker = setOperator(lookahead);
     match(lookahead);
     factor();
     sprintf(output + strlen(output), "R%d = R%d %s R%d\n", registers - 2,
-            registers - 2, &looker, registers - 1);
+            registers - 2, looker, registers - 1);
     registers -= 1;
-    strcpy(vars[varsNr], &looker);
+    strcpy(vars[varsNr], looker);
     varsNr++;
   }
+}
+
+//this function set the operator 
+char* setOperator(int lookahead){
+	if(lookahead == '+' )
+		return "+";
+	else if(lookahead == '-')
+		return "-";
+	else if(lookahead == '*' )
+		return "*";
+	else
+		return "/";
 }
 
 // funcion to check if the factor contains the right
@@ -179,6 +193,7 @@ void printStatmt() {
   varsNr = 0;
 }
 
+//this function print the error found.
 void printError(char c) {
   if (lookahead == START_U) {
     printf("Line: %d Identifier cannot start with underscore\n", lineNr);
